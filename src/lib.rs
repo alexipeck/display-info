@@ -33,7 +33,7 @@ use windows::{get_all, get_from_point};
 #[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
 mod unsupported;
 #[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
-use unsupported::{get_all, get_from_point, ScreenRawHandle};
+use unsupported::{get_all, get_from_point};
 
 use anyhow::Result;
 
