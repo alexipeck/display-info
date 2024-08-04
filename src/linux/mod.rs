@@ -6,8 +6,6 @@ use std::env::var_os;
 
 use crate::DisplayInfo;
 
-pub use xorg::ScreenRawHandle;
-
 fn is_wayland() -> bool {
     var_os("WAYLAND_DISPLAY")
         .or(var_os("XDG_SESSION_TYPE"))
