@@ -1,11 +1,10 @@
-use std::env::var_os;
-
-use anyhow::Result;
-
-use crate::DisplayInfo;
-
 mod wayland;
 mod xorg;
+
+use anyhow::Result;
+use std::env::var_os;
+
+use crate::DisplayInfo;
 
 pub use xorg::ScreenRawHandle;
 

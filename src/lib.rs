@@ -30,6 +30,11 @@ mod windows;
 #[cfg(target_os = "windows")]
 use windows::{get_all, get_from_point, ScreenRawHandle};
 
+#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
+mod unsupported;
+#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
+use unsupported::{get_all, get_from_point, ScreenRawHandle};
+
 use anyhow::Result;
 
 #[derive(Debug, Clone)]
