@@ -7,7 +7,7 @@ use smithay_client_toolkit::registry::{ProvidesRegistryState, RegistryState};
 use smithay_client_toolkit::{delegate_output, delegate_registry, registry_handlers};
 use xcb::XidNew;
 
-use crate::DisplayInfo;
+use crate::{DisplayInfo, ScreenRawHandle};
 
 impl From<&OutputInfo> for DisplayInfo {
     fn from(info: &OutputInfo) -> Self {
@@ -29,7 +29,7 @@ impl From<&OutputInfo> for DisplayInfo {
         DisplayInfo {
             id: info.id,
             name: info.name.clone().unwrap_or_default(),
-            raw_handle: unsafe { xcb::randr::Output::new(info.id) },
+            raw_handle: ScreenRawHandle::Linux(info.id), //unsafe { xcb::randr::Output::new(info.id) }
             x: ((x as f32) / scale_factor) as i32,
             y: ((y as f32) / scale_factor) as i32,
             width: ((w as f32) / scale_factor) as u32,

@@ -18,17 +18,17 @@
 #[cfg(target_os = "linux")]
 mod linux;
 #[cfg(target_os = "linux")]
-use linux::{get_all, get_from_point, ScreenRawHandle};
+use linux::{get_all, get_from_point};
 
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(target_os = "macos")]
-use macos::{get_all, get_from_point, ScreenRawHandle};
+use macos::{get_all, get_from_point};
 
 #[cfg(target_os = "windows")]
 mod windows;
 #[cfg(target_os = "windows")]
-use windows::{get_all, get_from_point, ScreenRawHandle};
+use windows::{get_all, get_from_point};
 
 #[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
 mod unsupported;
@@ -37,6 +37,16 @@ use unsupported::{get_all, get_from_point, ScreenRawHandle};
 
 use anyhow::Result;
 
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone)]
+pub enum ScreenRawHandle {
+    Linux(u32),
+    MacOS(u32),
+    Windows(isize),
+    Unsupported,
+}
+
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone)]
 pub struct DisplayInfo {
     /// The Display Name

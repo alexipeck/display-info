@@ -1,4 +1,4 @@
-use crate::DisplayInfo;
+use crate::{DisplayInfo, ScreenRawHandle};
 use anyhow::{anyhow, Result};
 use std::str;
 use xcb::x::{Atom, GetAtomName};
@@ -10,8 +10,6 @@ use xcb::{
     x::{GetProperty, Screen, ATOM_RESOURCE_MANAGER, ATOM_STRING},
     Connection, Xid,
 };
-
-pub type ScreenRawHandle = Output;
 
 impl DisplayInfo {
     fn new(
@@ -25,7 +23,7 @@ impl DisplayInfo {
         DisplayInfo {
             name,
             id: output.resource_id(),
-            raw_handle: *output,
+            raw_handle: ScreenRawHandle::Linux(output.resource_id()),
             x: ((monitor_info.x() as f32) / scale_factor) as i32,
             y: ((monitor_info.y() as f32) / scale_factor) as i32,
             width: ((monitor_info.width() as f32) / scale_factor) as u32,

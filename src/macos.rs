@@ -1,4 +1,4 @@
-use crate::DisplayInfo;
+use crate::{DisplayInfo, ScreenRawHandle};
 use anyhow::{anyhow, Result};
 use core_graphics::display::{CGDirectDisplayID, CGDisplay, CGError, CGPoint, CGRect};
 
@@ -24,7 +24,7 @@ impl DisplayInfo {
         DisplayInfo {
             id,
             name: format!("Display {id}"),
-            raw_handle: cg_display,
+            raw_handle: ScreenRawHandle::MacOS(cg_display.0),
             x: origin.x as i32,
             y: origin.y as i32,
             width: size.width as u32,
@@ -55,14 +55,14 @@ pub fn get_from_point(x: i32, y: i32) -> Result<DisplayInfo> {
         x: x as f64,
         y: y as f64,
     };
-    let max_displays: u32 = 16;
-    let mut display_ids: Vec<CGDirectDisplayID> = vec![0; max_displays as usize];
+    const MAX_DISPLAYS: u32 = 16;
+    let mut display_ids: Vec<CGDirectDisplayID> = vec![0; MAX_DISPLAYS as usize];
     let mut display_count: u32 = 0;
 
     let cg_error = unsafe {
         CGGetDisplaysWithPoint(
             point,
-            max_displays,
+            MAX_DISPLAYS,
             display_ids.as_mut_ptr(),
             &mut display_count,
         )

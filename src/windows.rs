@@ -1,4 +1,4 @@
-use crate::DisplayInfo;
+use crate::{DisplayInfo, ScreenRawHandle};
 use anyhow::{anyhow, Result};
 use fxhash::hash32;
 use std::mem;
@@ -27,8 +27,6 @@ use windows::Win32::{
     Graphics::Gdi::{CreateDCW, GetDeviceCaps, ReleaseDC, LOGPIXELSX},
 };
 
-pub type ScreenRawHandle = HMONITOR;
-
 impl DisplayInfo {
     fn new(h_monitor: HMONITOR, monitor_info_exw: &MONITORINFOEXW) -> Self {
         let sz_device = monitor_info_exw.szDevice.as_ptr();
@@ -42,7 +40,7 @@ impl DisplayInfo {
         DisplayInfo {
             id: hash32(sz_device_string.as_bytes()),
             name: sz_device_string.to_string(),
-            raw_handle: h_monitor,
+            raw_handle: ScreenRawHandle::Windows(h_monitor.0),
             x: rc_monitor.left,
             y: rc_monitor.top,
             width: (rc_monitor.right - rc_monitor.left) as u32,
